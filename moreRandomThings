@@ -1,1 +1,38 @@
+# Databricks notebook source exported at Thu, 2 Jun 2016 21:20:29 UTC
+edges = sc.parallelize([("a", "b"), ("a", "c"), ("a", "d"), ("a", "e"), ("1", "2"), ("2", "3"), ("3", "4")]).toDF(["src", "dst"])
 
+# COMMAND ----------
+
+display(edges)
+
+# COMMAND ----------
+
+edges.registerTempTable("edges")
+
+# COMMAND ----------
+
+vertices = sqlContext.sql("select src as id from edges union select dst as id from edges")
+
+# COMMAND ----------
+
+display(vertices)
+
+# COMMAND ----------
+
+from graphframes import *
+
+# COMMAND ----------
+
+graph = GraphFrame(vertices,edges)
+
+# COMMAND ----------
+
+result = graph.connectedComponents()
+
+# COMMAND ----------
+
+display(result)
+
+# COMMAND ----------
+
+result.groupBy("component").count().show()
