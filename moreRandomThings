@@ -36,3 +36,7 @@ display(result)
 # COMMAND ----------
 
 result.groupBy("component").count().show()
+
+# COMMAND ----------
+
+# NEW CELL FROM GITHUB
